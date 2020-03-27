@@ -15,6 +15,6 @@ import resultsReducer from '../features/results/resultsSlice';
 export default configureStore({
   reducer: {
     counter: counterReducer,
-    youpi: resultsReducer
+    results: resultsReducer
   },
 });
