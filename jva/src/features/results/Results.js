@@ -3,6 +3,7 @@ import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/Container'
 import Button from 'react-bootstrap/Button';
 import { useSelector, useDispatch } from 'react-redux';
+import Spinner from 'react-bootstrap/Spinner';
 import {
   selectAnimes,
   loadCharacter,
@@ -39,30 +40,36 @@ export default function Results() {
       getAnime();
      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+  let test = 
+  <Spinner animation="border" role="status">
+  <span className="sr-only">Loading...</span>
+ </Spinner>
+
   
+    if(typeof allAnimes !== 'string'){
+      test = allAnimes.map(element => {
+        return (
+            <Card key={element.mal_id} style={{ width: "16rem", padding: '1em', margin: '0.5em' }}>
+              <Card.Img variant="top" src={element.image_url} />
+              <Card.Body>
+                <Card.Title>{element.title}</Card.Title>
+                <Card.Text>Type : {element.type}</Card.Text>
+                <Card.Text>Episodes : {element.episodes}</Card.Text>
+                <Button variant="primary">
+                  Voir détails
+                </Button>
+              </Card.Body>
+            </Card>
+        );
+      });
+    } 
 
-    // Permet de transformer l'objet recupéré depuis le state en array mappable
-    const AnimeArray = Object.entries(allAnimes);
-
-    const generateAnimeCards = AnimeArray.map(element => {
-      return (
-          <Card key={element[1].mal_id} style={{ width: "16rem", padding: '1em', margin: '0.5em' }}>
-            <Card.Img variant="top" src={element[1].image_url} />
-            <Card.Body>
-              <Card.Title>{element[1].title}</Card.Title>
-              <Card.Text>Type : {element[1].type}</Card.Text>
-              <Card.Text>Episodes : {element[1].episodes}</Card.Text>
-              <Button variant="primary">
-                Voir détails
-              </Button>
-            </Card.Body>
-          </Card>
-      );
-    });
-   
+  
     return (
       <Container style={{ display: "flex", flexWrap: 'wrap', justifyContent: 'space-evenly', marginTop: '4em'}}>
-      {generateAnimeCards}
+      {test}
+    
       </Container>
     );
 }
